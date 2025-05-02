@@ -55,6 +55,23 @@ class Ball:
         ):
             self.speed_y = -abs(self.speed_y)
 
+        for brick in bricks:
+            if not brick.hit:
+                dx = abs(self.x - (brick.rect.x + brick.rect.width / 2))
+                dy = abs(self.y - (brick.rect.y + brick.rect.height / 2))
+                if dx <= (self.radius + brick.rect.width / 2) and dy <= (
+                    self.radius + brick.rect.height / 2
+                ):
+                    brick
+
+                    if (
+                        self.x < brick.rect.x
+                        or self.x > brick.rect.x + brick.rect.width
+                    ):
+                        self.speed_x = -self.speed_x
+                    else:
+                        self.speed_y = -self.speed_y
+
 
 ######################定義函式區######################
 
@@ -107,9 +124,6 @@ while True:
     screen.fill((0, 0, 0))  # 清除畫面
     mos_x, mos_y = pygame.mouse.get_pos()  # 取得滑鼠位置
     pad.rect.x = mos_x - pad.rect.width // 2  # 底板已滑鼠為中心
-
-    ball.x = pad.rect.x + pad.rect.width // 2  # 球的x座標
-    ball.y = pad.rect.y - ball_radius  # 球的y座標
 
     if pad.rect.x < 0:  # 底板不可以超出邊界(左)
         pad.rect.x = 0
