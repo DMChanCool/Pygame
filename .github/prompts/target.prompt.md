@@ -5,17 +5,9 @@ tools: ['codebase', 'editFiles', 'fetch', 'problems', 'runCommands', 'search', '
 
 # 開發步驟
 
--   遵守開發規範
-- 請修改 #file:class14/prj14.py
-請使用 load_doodle_sprites(): 指令載入圖片
-請幫我將角色、平台以及彈簧改成image資料夾當中的照片圖案，如果找不到照片使用原本的方塊圖案顯示
-將背景換成白色、文字改為黑色
-垂直速度小於0表示上升（跳躍中）
-反之當垂直速度大於0表示下降
-
-新增變數facing_right
-當direction>0，facing_right=True，反之。
-預設面相為右邊
-
-新增變數jumping紀錄玩家跳躍狀態
-如果有載入照片的話，確認角色存在，根據角色當前狀態選擇適合的圖片，調整大小為實際尺寸，繪製到視窗上面，如果找不到該角色照片就使用原本的方形
+- 遵守開發規範
+- 請修改 `class15/prj01.py` 此檔案
+- 使用 `class15/image/space.png` 圖片
+- 畫面大小需與此圖片相同
+- 讓此圖片不斷向下移動，並在畫面上端重新出現
+- 以 60 FPS 的速度運行
