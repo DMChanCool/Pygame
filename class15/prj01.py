@@ -1,7 +1,49 @@
 import pygame  # 載入 pygame 套件
 import sys  # 載入系統相關套件，方便結束程式
 
+
 ###################### 初始化設定 ######################
+###################### 玩家物件類別 ######################
+class Player:
+    def __init__(self, x, y, image_path, bg_width, bg_height):
+        self.image = pygame.image.load(image_path)  # 載入玩家圖片
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)  # 設定初始位置
+        self.bg_width = bg_width  # 背景寬度
+        self.bg_height = bg_height  # 背景高度
+        self.speed = 10  # 玩家移動速度
+
+    def move(self, keys):
+        """
+        根據按鍵移動玩家，並限制在背景範圍內
+        keys: pygame.key.get_pressed() 的結果
+        """
+        if keys[pygame.K_w]:  # 上
+            self.rect.y -= self.speed
+        if keys[pygame.K_s]:  # 下
+            self.rect.y += self.speed
+        if keys[pygame.K_a]:  # 左
+            self.rect.x -= self.speed
+        if keys[pygame.K_d]:  # 右
+            self.rect.x += self.speed
+        # 邊界判斷，不能超出背景
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > self.bg_width:
+            self.rect.right = self.bg_width
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > self.bg_height:
+            self.rect.bottom = self.bg_height
+
+    def draw(self, display_area):
+        """
+        繪製玩家
+        display_area: pygame 的顯示區域
+        """
+        display_area.blit(self.image, self.rect)
+
+
 pygame.init()  # 啟動 pygame
 
 ###################### 載入圖片 ######################
@@ -14,6 +56,13 @@ screen = pygame.display.set_mode((bg_width, bg_height))  # 設定視窗大小與
 pygame.display.set_caption("背景循環移動範例")  # 設定視窗標題
 
 ###################### 背景移動參數 ######################
+###################### 玩家初始化 ######################
+# 玩家初始位置設在畫面中央
+player_start_x = bg_width // 2
+player_start_y = bg_height // 2
+player = Player(
+    player_start_x, player_start_y, "class15/image/fighter_M.png", bg_width, bg_height
+)
 # 設定背景初始 y 座標
 bg_y1 = 0  # 第一張背景的 y 座標
 bg_y2 = -bg_height  # 第二張背景的 y 座標（在畫面上方）
@@ -31,6 +80,10 @@ while True:
             pygame.quit()
             sys.exit()
 
+    # 取得鍵盤按鍵狀態
+    keys = pygame.key.get_pressed()
+    player.move(keys)  # 玩家移動
+
     # 更新背景座標，使其向下移動
     bg_y1 += bg_speed
     bg_y2 += bg_speed
@@ -44,6 +97,9 @@ while True:
     # 繪製背景圖片（兩張，形成循環效果）
     screen.blit(bg_img, (0, bg_y1))
     screen.blit(bg_img, (0, bg_y2))
+
+    # 繪製玩家
+    player.draw(screen)
 
     # 更新畫面顯示
     pygame.display.update()
