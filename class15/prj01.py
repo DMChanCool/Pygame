@@ -12,20 +12,33 @@ class Player:
         self.bg_width = bg_width  # 背景寬度
         self.bg_height = bg_height  # 背景高度
         self.speed = 10  # 玩家移動速度
+        # 新增：載入左右方向的玩家圖片
+        self.image_left = pygame.image.load(
+            "class15/image/fighter_L.png"
+        )  # 左移時顯示左圖（依原始需求）
+        self.image_right = pygame.image.load(
+            "class15/image/fighter_R.png"
+        )  # 右移時顯示右圖（依原始需求）
+        self.image_mid = self.image  # 保留原始圖片（中間）
 
     def move(self, keys):
         """
         根據按鍵移動玩家，並限制在背景範圍內
         keys: pygame.key.get_pressed() 的結果
         """
+        # 先預設為中間圖片
+        self.image = self.image_mid
+        # 判斷按鍵並移動
         if keys[pygame.K_w]:  # 上
             self.rect.y -= self.speed
         if keys[pygame.K_s]:  # 下
             self.rect.y += self.speed
         if keys[pygame.K_a]:  # 左
             self.rect.x -= self.speed
+            self.image = self.image_left  # 左移時切換圖片（顯示左圖）
         if keys[pygame.K_d]:  # 右
             self.rect.x += self.speed
+            self.image = self.image_right  # 右移時切換圖片（顯示右圖）
         # 邊界判斷，不能超出背景
         if self.rect.left < 0:
             self.rect.left = 0
